@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Rudolph's Christmas Rush: Dynamic Terrain</title>
+    <style>
+        body { margin: 0; overflow: hidden; background: #050510; touch-action: none; user-select: none; -webkit-user-select: none; }
+        canvas { width: 100vw; height: 100vh; display: block; }
+        
+        #ui {
+            position: absolute; top: 10px; left: 10px;
+            color: #fff; font-family: 'Courier New', monospace;
+            background: rgba(0,0,0,0.6); padding: 15px; border-radius: 8px;
+            pointer-events: none; border: 1px solid #444;
+            z-index: 10;
+        }
+        h2 { margin: 0 0 10px 0; color: #ffd700; text-shadow: 0 0 5px orange; font-size: 1.2rem; }
+        p { margin: 5px 0; font-size: 0.9rem; }
+        .key { display: inline-block; padding: 2px 6px; border: 1px solid #aaa; border-radius: 4px; background: #333; font-weight: bold; }
+        .error { color: #ff5555; font-weight: bold; margin-top: 10px; }
+        #status { margin-top: 10px; font-weight: bold; color: #aaa; }
+        
+        /* Game Over Screen */
+        #gameOverScreen {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85);
+            display: none; 
+            flex-direction: column; justify-content: center; align-items: center;
+            color: white; font-family: 'Courier New', monospace;
+            z-index: 20;
+        }
+        #gameOverScreen h1 { font-size: 3em; color: #ff5555; margin-bottom: 10px; text-shadow: 0 0 10px red; text-align: center;}
+        #gameOverScreen p { font-size: 1.5em; text-align: center; }
+        #gameOverReason { font-size: 1.2em; color: #ffd700; margin-bottom: 20px; }
+        button {
+            margin-top: 20px; padding: 15px 30px; font-size: 1.2em;
+            background: #ffd700; border: none; cursor: pointer; border-radius: 5px;
+            font-weight: bold; color: #333; pointer-events: auto;
+            box-shadow: 0 4px #b8860b; transition: transform 0.1s;
+        }
+        button:active { transform: translateY(4px); box-shadow: 0 0 #b8860b; }
+
+        /* Touch Controls */
+        .touch-controls {
+            position: absolute; bottom: 20px; width: 100%;
+            display: flex; justify-content: space-between;
+            padding: 0 20px; box-sizing: border-box;
+            pointer-events: none;
+            z-index: 15;
+        }
+        .touch-group { pointer-events: auto; display: flex; gap: 15px; }
+        .touch-btn {
+            width: 70px; height: 70px;
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            border-radius: 50%;
+            display: flex; justify-content: center; align-items: center;
+            color: white; font-size: 24px; font-weight: bold;
+            user-select: none; -webkit-user-select: none;
+            touch-action: none;
+        }
+        .touch-btn:active, .touch-btn.active { background: rgba(255, 215, 0, 0.4); border-color: #ffd700; }
+        
+        /* Mobile adjustment */
+        @media (max-width: 600px) {
+            #ui { transform: scale(0.8); transform-origin: top left; max-width: 60%; }
+            .touch-btn { width: 60px; height: 60px; font-size: 20px; }
+        }
+    </style>
+    <!-- Math Library -->
+    <script src="m4.js"></script>
+</head>
+<body>
+
+    <div id="ui">
+        <h2>🎅 Rudolph's Christmas Rush</h2>
+        <p><span class="key">←</span> <span class="key">→</span> : Mover</p>
+        <p><span class="key">Espaço</span> : Pular</p>
+        <p><span class="key">F</span> : Atirar (Com Poder)</p>
+        <p>Presentes: <span id="scoreVal" style="color: #ffd700">0</span></p>
+        <div id="status">MODO: A PÉ</div>
+        <div id="errorMsg"></div>
+    </div>
+
+    <div id="gameOverScreen">
+        <h1>GAME OVER</h1>
+        <p id="gameOverReason">O Urso te alcançou!</p>
+        <p>Presentes Coletados: <span id="finalScore">0</span></p>
+        <button onclick="location.reload()">Tentar Novamente</button>
+    </div>
+
+    <!-- Touch Controls -->
+    <div class="touch-controls">
+        <div class="touch-group">
+            <div class="touch-btn" id="btnLeft">←</div>
+            <div class="touch-btn" id="btnRight">→</div>
+        </div>
+        <div class="touch-group">
+            <div class="touch-btn" id="btnShoot" style="border-radius: 15px;">🔥</div>
+            <div class="touch-btn" id="btnJump">⏫</div>
+        </div>
+    </div>
+
+    <canvas id="glCanvas"></canvas>
+
+<script src = 'app.js'>
+
+</script>
+</body>
+</html>
